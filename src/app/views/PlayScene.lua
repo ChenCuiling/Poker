@@ -16,7 +16,7 @@ function PlayScene:onCreate()
 		print("退出游戏")
 	end)
 	
-
+	--牌型查看
 	self.btn_news:addClickEventListener(function()
 		if self.CardType then
 			--self.CardType:removeFromParent()

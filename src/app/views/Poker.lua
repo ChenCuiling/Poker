@@ -1,6 +1,6 @@
 local Poker = class("Poker", cc.load("mvc").ViewBase)
 
---ÆË¿ËÅÆÀà
+--æ‰‘å…‹ç‰Œç±»
 local plistFile = "GamePlayScene.plist"
 local pngFile = "GamePlayScene.png"
 
@@ -10,15 +10,18 @@ local _type = ""
 
 function Poker:onCreate()	
 	self.spriteFrame = cc.SpriteFrameCache:getInstance()
-	self.spriteFrame:addSpriteFrames(plistFile,pngFile) --¼ÓÔØÍ¼Æ¬½øÄÚ´æ
+	self.spriteFrame:addSpriteFrames(plistFile,pngFile) --åŠ è½½å›¾ç‰‡è¿›å†…å­˜
 	self:addCard()
 	self:shuffle()
 	self:distribute()
+	print("------------------------")
+	self:compare()
+	self:blinds()
 end
 
---½«52ÕÅÆË¿ËÅÆ´æ½ø¶þÎ¬Êý×éÀï
---i£º1ÎªºÚÌÒ£¬2ÎªºìÌÒ£¬3ÎªÃ·»¨£¬4Îª·½¿é
---j£ºÅÆÃæÊý×Ö£¬11ÎªJ£¬12ÎªQ£¬13ÎªK
+--å°†52å¼ æ‰‘å…‹ç‰Œå­˜è¿›äºŒç»´æ•°ç»„é‡Œ
+--iï¼š1ä¸ºé»‘æ¡ƒï¼Œ2ä¸ºçº¢æ¡ƒï¼Œ3ä¸ºæ¢…èŠ±ï¼Œ4ä¸ºæ–¹å—
+--jï¼š1~10ä¸ºç‰Œé¢æ•°å­—ï¼Œ11ä¸ºJï¼Œ12ä¸ºQï¼Œ13ä¸ºK
 function Poker:addCard()
 	for i = 1, 4 do
 		card[i] = {}
@@ -38,7 +41,7 @@ function Poker:addCard()
 			local SpFrame = self.spriteFrame:getSpriteFrame(pic)
 			self._frame = cc.Sprite:createWithSpriteFrame(SpFrame)
 			--self._frame:setPosition( i*100 , display.cy + 100 - y )
-			self._frame:addTo(self)
+			--self._frame:addTo(self)
 			card[i][j] = self._frame
 			print(i..","..j)
 			print(pic)
@@ -47,7 +50,7 @@ function Poker:addCard()
 	end
 end
 
---Ï´ÅÆ
+--æ´—ç‰Œ
 function Poker:shuffle()
 	self.clone_card = clone(card)
 	for i = 4, 1, -1 do
@@ -62,11 +65,12 @@ function Poker:shuffle()
 	end
 end
 
---·¢ÅÆ,Îå¸öÍæ¼Ò Ã»ÈËÁ½ÕÅµ×ÅÆ£¬ÈýÕÅ·­ÅÆ,Ò»ÕÅ×ªÅÆ,Ò»ÕÅºÓÅÆ
+--å‘ç‰Œ,äº”ä¸ªçŽ©å®¶ æ²¡äººä¸¤å¼ åº•ç‰Œï¼Œä¸‰å¼ ç¿»ç‰Œ,ä¸€å¼ è½¬ç‰Œ,ä¸€å¼ æ²³ç‰Œ
 function Poker:distribute()
 	for i = 1, 5 do
 		local common = self.clone_card[1][i]
 		common:setPosition( i*100 , display.cy + 100 )
+		common:addTo(self)
 	end
 	for j = 1, 10 do
 		local buttom = self.clone_card[2][j]
@@ -75,65 +79,105 @@ function Poker:distribute()
 		else
 			buttom:setPosition( j*100-50, display.cy - 100 )
 		end
+		buttom:addTo(self)
 	end
 end
 
 
---ÅÆÐÍ×éºÏ±È½Ï,Èý´Î±È½Ï
+
+--ç‰Œåž‹ç»„åˆæ¯”è¾ƒ,ä¸‰æ¬¡æ¯”è¾ƒ
 function Poker:compare()
-
+	for k, v in pairs(card) do
+		for p, m in pairs(card[k]) do
+			print("k=" .. k ..", p=" .. p )
+			print("v=" .. tostring(v) ..", m=" .. tostring(m))
+			local data = tostring(self.clone_card[1][1])
+			local datam = tostring(m)
+			if datam == data then
+				print("ç´¢å¼•ï¼šk=" .. k ..", p=" .. p )
+			end
+		end
+    end
 end
 
---»Ê¼ÒÍ¬»¨Ë³
-function Poker:RoyalFlush()
+-- --çš‡å®¶åŒèŠ±é¡º
+-- function Poker:RoyalFlush()
+	-- for i = 1, #card pairs(card) do
+		
+		-- if card[]
+	-- end
+-- end
 
+-- --åŒèŠ±é¡º
+-- function Poker:StraightFlush()
+
+-- end
+
+-- --å››æ¡
+-- function Poker:FourOfAkind()
+
+-- end
+
+-- --æ»¡å ‚çº¢(è‘«èŠ¦)
+-- function Poker:FullHouse()
+
+-- end
+
+-- --åŒèŠ±
+-- function Poker:Flush()
+
+-- end
+
+-- --é¡ºå­
+-- function Poker:Straight()
+
+-- end
+
+-- --ä¸‰æ¡
+-- function Poker:ThreeOfAkind()
+
+-- end
+
+-- --ä¸¤å¯¹
+-- function Poker:TwoPairs()
+
+-- end
+
+-- --ä¸€å¯¹
+-- function Poker:OnePairs()
+
+-- end
+
+-- --é«˜ç‰Œ
+-- function Poker:HighCard()
+
+-- end
+
+
+--åº„å®¶ã€å¤§ç›²æ³¨ã€å°ç›²æ³¨çš„ç¡®å®š
+function Poker:blinds()
+	local pos = math.random(1,5)
+	local positionA = pos * 100
+	-- if pos == 1 then
+		-- local positionB = 5 * 100
+		-- local positionC = 4 * 100
+	-- elseif pos == 2 then
+		-- local positionB = ( pos - 1 ) * 100
+		-- local positionC = 5 * 100
+	-- else pos >= 3 then
+		-- local positionB = ( pos - 1 ) * 200
+		-- local positionC = ( pos - 2 ) * 200
+	--end
+	display.newSprite("Resourse/bfn_dealer.png")
+		:move(positionA, display.cy - 25)
+		:addTo(self)
+	-- display.newSprite("Resourse/bfn_tips_bb.png")
+		-- :move(positionB, display.cy - 25)
+		-- :addTo(self)
+	-- display.newSprite("Resourse/bfn_tips_sb.png")
+		-- :move(positionC, display.cy - 25)
+		-- :addTo(self)
 end
-
---Í¬»¨Ë³
-function Poker:StraightFlush()
-
-end
-
---ËÄÌõ
-function Poker:FourOfAkind()
-
-end
-
---ÂúÌÃºì(ºùÂ«)
-function Poker:FullHouse()
-
-end
-
---Í¬»¨
-function Poker:Flush()
-
-end
-
---Ë³×Ó
-function Poker:Straight()
-
-end
-
---ÈýÌõ
-function Poker:ThreeOfAkind()
-
-end
-
---Á½¶Ô
-function Poker:TwoPairs()
-
-end
-
---Ò»¶Ô
-function Poker:OnePairs()
-
-end
-
---¸ßÅÆ
-function Poker:HighCard()
-
-end
-
 
 
 return Poker

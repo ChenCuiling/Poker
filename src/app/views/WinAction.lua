@@ -5,7 +5,7 @@ local pngFile = "GamePlayScene.png"
 
 function WinAction:onCreate()	
 	self.spriteFrame = cc.SpriteFrameCache:getInstance()
-	self.spriteFrame:addSpriteFrames(plistFile,pngFile) --¼ÓÔØÍ¼Æ¬½øÄÚ´æ
+	self.spriteFrame:addSpriteFrames(plistFile,pngFile) --åŠ è½½å›¾ç‰‡è¿›å†…å­˜
 	local spriteTest = self.spriteFrame:getSpriteFrame("WIN0001.png")
 	self._win = cc.Sprite:createWithSpriteFrame(spriteTest)
 	self._win:setPosition(display.cx,display.cy)
@@ -22,8 +22,8 @@ function WinAction:WinRun()
 		animation:addSpriteFrame(blinkFrame)
 	end
 	
-	animation:setDelayPerUnit(0.1) --ÉèÖÃÃ¿Ö¡µÄ²¥·Å¼ä¸ô
-	animation:setRestoreOriginalFrame(true)  --ÉèÖÃ²¥·ÅÍê³ÉºóÊÇ·ñ»Ø¹é×î³õ×´Ì¬
+	animation:setDelayPerUnit(0.1) --è®¾ç½®æ¯å¸§çš„æ’­æ”¾é—´éš”
+	animation:setRestoreOriginalFrame(true)  --è®¾ç½®æ’­æ”¾å®Œæˆåæ˜¯å¦å›å½’æœ€åˆçŠ¶æ€
 	local action = cc.Animate:create(animation)
 	self._win:runAction(cc.RepeatForever:create(action))
 end
